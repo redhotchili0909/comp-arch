@@ -1,5 +1,5 @@
 module fsm #(
-    parameter ONE_SEC = 12_000_000    // 12M cycles = 1 second
+    parameter ONE_CYCLE = 2_000_000
 )(
     input logic clk,
     output logic red,
@@ -20,11 +20,11 @@ module fsm #(
     state_t current_state = RED;
     state_t next_state;
 
-    logic [$clog2(ONE_SEC) - 1:0] count = 0;
+    logic [$clog2(ONE_CYCLE) - 1:0] count = 0;
 
-    // State transition every 1 second
+    // State transition every 1/6 second
     always_ff @(posedge clk) begin
-        if (count == ONE_SEC - 1) begin
+        if (count == ONE_CYCLE - 1) begin
             count <= 0;
             current_state <= next_state;
         end else begin
